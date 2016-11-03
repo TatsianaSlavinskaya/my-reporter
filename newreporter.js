@@ -83,19 +83,29 @@ var Reporter = function(options) {
 
   // for output file output
   function formatOutput(output) {
-ws.cell(1,1).string('AppDir:' + output.appDir);
+    var style = wb.createStyle({
+      font: {
+        color: '#E41212',
+        size: 16
+      },
+      numberFormat: '$#,##0.00; ($#,##0.00); -'
+    });
+    ws.cell(1,1).string('AppDir:' + output.appDir).style(style);
  output.suites.forEach(function(suite){
-  ws.cell(2,1).string('Suite');
-  ws.cell(2,2).string(suite.description);
-  ws.cell(2,3).string(suite.status);
+   var i=2
+  ws.cell(i,1).string('Suite');
+  ws.cell(i,2).string(suite.description);
+  ws.cell(i,3).string(suite.status);
+   i++;
    suite.specs.forEach(function(spec){
-     ws.cell(3,2).string(spec.status);
-     ws.cell(3,3).string(spec.description);
+     ws.cell(i,2).string(spec.status);
+     ws.cell(i,3).string(spec.description);
+     i++;
    
    if (spec.failedExpectations) {
         spec.failedExpectations.forEach(function (fe) {
-           ws.cell(4,1).string('message');
-           ws.cell(4,2).string(fe.message);
+           ws.cell(i,1).string('message');
+           ws.cell(i,2).string(fe.message);
    });
  }
  });
